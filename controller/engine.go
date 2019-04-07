@@ -7,19 +7,21 @@ import (
 	"node-label-controller/config"
 
 	k8s "k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
+	"k8s.io/klog"
 )
 
 // Controller manages all the interactions with of the custom controllers.
 type Controller interface {
-	Stop()
-	Run()
 	Name() string
+	Run()
+	Errors() <-chan error
+	Stop()
 }
 
 type engine struct {
 	controllers sync.Map
-	kubeConfig  string
 	configs     *config.Config
 }
 
@@ -29,7 +31,16 @@ func NewEngine(configs *config.Config) (*engine, error) {
 		return nil, errors.New("engine configs cannot be nil")
 	}
 
-	clientConfig, err := clientcmd.BuildConfigFromFlags("", configs.KubeConfigPath)
+	var (
+		clientConfig *rest.Config
+		err          error
+	)
+
+	if configs.KubeConfigPath != "" {
+		clientConfig, err = clientcmd.BuildConfigFromFlags("", configs.KubeConfigPath)
+	} else {
+		clientConfig, err = rest.InClusterConfig()
+	}
 	if err != nil {
 		return nil, err
 	}
@@ -49,7 +60,6 @@ func NewEngine(configs *config.Config) (*engine, error) {
 	sm.Store(lcController.Name(), lcController)
 
 	e := &engine{
-		kubeConfig:  configs.KubeConfigPath,
 		controllers: sm,
 		configs:     configs,
 	}
@@ -62,6 +72,12 @@ func (e *engine) Start() {
 	e.controllers.Range(
 		func(key, value interface{}) bool {
 			go value.(*LinuxContainerController).Run()
+
+			go func() {
+				for err := range value.(*LinuxContainerController).Errors() {
+					klog.Errorf("error occurred while processing: %v", err)
+				}
+			}()
 			return true
 		})
 }
