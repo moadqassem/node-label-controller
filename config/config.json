@@ -1,0 +1,9 @@
+{
+  "kube_config_path": "./kubeconfig",
+  "linux_container_controller": {
+    "workers_number": 1,
+    "name": "linux_container_controller",
+    "resource": "node",
+    "max_retries": 5
+  }
+}
