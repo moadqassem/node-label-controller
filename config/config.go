@@ -15,7 +15,6 @@ type Config struct {
 type LinuxContainerController struct {
 	WorkersNumber int    `json:"workers_number"`
 	Name          string `json:"name"`
-	Resource      string `json:"resource"`
 	MaxRetries    int    `json:"max_retries"`
 }
 

@@ -45,10 +45,6 @@ func NewLinuxContainerControllerFromClientSet(configs *config.LinuxContainerCont
 		configs.MaxRetries = defaultMaxRetries
 	}
 
-	if configs.Resource == "" {
-		return nil, errors.New("controller resource cannot be nil")
-	}
-
 	return &LinuxContainerController{
 		configs:       configs,
 		nodeInterface: client.CoreV1().Nodes(),

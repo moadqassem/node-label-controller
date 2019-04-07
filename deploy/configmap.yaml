@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-labeler-config
+  namespace: default
+data:
+  config.json: |-
+    {
+      "linux_container_controller": {
+        "workers_number": 1,
+        "name": "linux_container_controller",
+        "max_retries": 5
+      }
+    }

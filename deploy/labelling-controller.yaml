@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-labeler-deployment
+  labels:
+    app: node-labeler
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-labeler
+  template:
+    metadata:
+      labels:
+        app: node-labeler
+    spec:
+      containers:
+        - image: moadqassem/node-label-controller:latest
+          name: node-labeler
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "512m"
+            requests:
+              memory: "128Mi"
+              cpu: "256m"
+          command: ["node-label-controller"]
+          args:
+            - -config=/etc/node-labeler/config.json
+          volumeMounts:
+            - name: node-labeler-volume
+              mountPath: /etc/node-labeler
+              readOnly: true
+      restartPolicy: Always
+      volumes:
+        - name: node-labeler-volume
+          configMap:
+            name: node-labeler-config
