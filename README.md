@@ -15,6 +15,10 @@ labeler. The `engine` has a tracking channel for any error which occurs during t
 The `linux_controller` is responsible for the listing all the cluster nodes, and detect which one is running Container 
 Linux as an operating system, check the node labels, add the label and update the node. 
 
+The `linux_controller` comes in two modes, the first mode(default) is the Watcher mode where a watcher is attached to the node interface 
+and watches the status of the nodes and update them accordingly. The second mode, uses a ticker loop which runs every second 
+to track the status of the nodes and update them accordingly.
+
 ### Requirements
 
 In order to run the prebuilt docker image directly without making any changes, the only requirement is a Kubernetes Cluster.
@@ -50,6 +54,11 @@ There is a possibility of running the labeler from the source code directly on t
 and will run a different clientset creation method. To start the controller run: `make run` 
 
 - After running the labeler run `kubectl describe node [container-linux-node-name]` and observe the new added label.
+
+**Running the second mode(the ticker mode):**
+
+The watcher mode is the default mode, however if the user chooses to use the second mode, which works as a scheduled process,
+in the config file(map) change the `watcher: true` to `watcher: false`
 
 **Validating Container Linux Node Labeler:** 
 

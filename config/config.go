@@ -16,6 +16,7 @@ type LinuxContainerController struct {
 	WorkersNumber int    `json:"workers_number"`
 	Name          string `json:"name"`
 	MaxRetries    int    `json:"max_retries"`
+	Watcher       bool   `json:"watcher"`
 }
 
 // LoadConfig load the configurations from the config.json file into the Config struct.

@@ -9,6 +9,7 @@ data:
       "linux_container_controller": {
         "workers_number": 1,
         "name": "linux_container_controller",
-        "max_retries": 5
+        "max_retries": 5,
+        "watcher": true
       }
     }
