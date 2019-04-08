@@ -4,7 +4,7 @@ metadata:
   name: node-labeler-deployment
   labels:
     app: node-labeler
-  namespace: default
+  namespace: node-labeler
 spec:
   replicas: 1
   selector:

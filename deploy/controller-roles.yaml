@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  namespace: default
+  namespace: node-labeler
   name: node-labeler
 rules:
   - apiGroups:
@@ -26,12 +26,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  namespace: default
+  namespace: node-labeler
   name: node-labeler-rbac
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: default
+    namespace: node-labeler
 roleRef:
   kind: ClusterRole
   name: node-labeler

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: node-labeler-config
-  namespace: default
+  namespace: node-labeler
 data:
   config.json: |-
     {

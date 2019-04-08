@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: container-linux-update-operator
-  namespace: default
+  namespace: node-labeler
 spec:
   replicas: 1
   template:
