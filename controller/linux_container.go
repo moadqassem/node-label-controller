@@ -25,7 +25,6 @@ const (
 	linuxContainerLabel  = "kubermatic.io/uses-container-linux"
 	linuxContainerValue  = "true"
 	containerImage       = "Container Linux"
-	namespace = "node-labeler"
 )
 
 // LinuxContainerController labels the the node objects in case of node operating system is ContainerLinux.
@@ -60,7 +59,7 @@ func NewLinuxContainerControllerFromClientSet(configs *config.LinuxContainerCont
 		stop:    make(chan struct{}),
 	}
 
-	nodeListWatcher := cache.NewListWatchFromClient(client.CoreV1().RESTClient(), "nodes", namespace, fields.Everything())
+	nodeListWatcher := cache.NewListWatchFromClient(client.CoreV1().RESTClient(), "nodes", metav1.NamespaceAll, fields.Everything())
 	if nodeListWatcher == nil {
 		return nil, errors.New("created watcher is nil")
 	}
