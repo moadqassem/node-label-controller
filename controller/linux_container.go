@@ -188,6 +188,10 @@ func (lc *LinuxContainerController) nodeLabelingSync(key string) error {
 
 			labels[linuxContainerLabel] = linuxContainerValue
 			node.SetLabels(labels)
+			_, err := lc.client.CoreV1().Nodes().Update(node)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
